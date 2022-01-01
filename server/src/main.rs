@@ -1,6 +1,6 @@
 use canary::Addr;
-use srpc::canary::routes::GLOBAL_ROUTE;
 use server::PingServer;
+use srpc::canary::routes::GLOBAL_ROUTE;
 
 #[canary::main]
 async fn main() -> canary::Result<()> {

@@ -1,8 +1,8 @@
 use canary::ServiceAddr;
+use server::{Ping, PingServer, Pong};
 use srpc::IntoClient;
-use yew::prelude::*;
-use server::{Pong, PingServer, Ping};
 use wasm_bindgen_futures::spawn_local;
+use yew::prelude::*;
 
 #[function_component(App)]
 fn app() -> Html {
@@ -10,18 +10,21 @@ fn app() -> Html {
 
     {
         let message = message.clone();
-        use_effect_with_deps(move |_| {
-            if message.is_none() {
-                spawn_local(async move {
-                    let addr = "ping://wss@127.0.0.1:8085".parse::<ServiceAddr>().unwrap();
-                    let connection = addr.connect().await.unwrap();
-                    let mut ping = connection.client::<PingServer>();
-                    let pong = ping.ping(Ping(42)).await.unwrap();
-                    message.set(Some(pong))
-                });
-            }
-            move || ()
-        }, ());
+        use_effect_with_deps(
+            move |_| {
+                if message.is_none() {
+                    spawn_local(async move {
+                        let addr = "ping://wss@127.0.0.1:8085".parse::<ServiceAddr>().unwrap();
+                        let connection = addr.connect().await.unwrap();
+                        let mut ping = connection.client::<PingServer>();
+                        let pong = ping.ping(Ping(42)).await.unwrap();
+                        message.set(Some(pong))
+                    });
+                }
+                move || ()
+            },
+            (),
+        );
     }
 
     html! {

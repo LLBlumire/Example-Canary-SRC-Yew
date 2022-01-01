@@ -6,7 +6,7 @@ fn main() {
     let task = std::env::args().nth(1);
     match task.as_ref().map(|it| it.as_str()) {
         Some("serve") => serve(),
-        _ => help()
+        _ => help(),
     }
 }
 
@@ -17,7 +17,8 @@ fn help() {
 Tasks:
 
 serve           compiles and serves project on a development serve
-        ".trim()
+        "
+        .trim()
     );
 }
 
@@ -34,9 +35,11 @@ fn serve() {
 
 fn spawn_serve_client() -> Child {
     let mut command = Command::new("trunk");
-    command.current_dir(project_root())
+    command
+        .current_dir(project_root())
         .arg("serve")
-        .arg("--port 8080")
+        .arg("--port")
+        .arg("8080")
         .arg("--dist")
         .arg(target_dist_dir())
         .arg("--")
@@ -47,13 +50,14 @@ fn spawn_serve_client() -> Child {
 
 fn spawn_serve_server() -> Child {
     let mut command = Command::new("cargo");
-    command.current_dir(project_root())
+    command
+        .current_dir(project_root())
         .arg("run")
-        .arg("-p server")
+        .arg("-p")
+        .arg("server")
         .spawn()
         .expect("Failed serve_server")
 }
-
 
 fn project_root() -> PathBuf {
     Path::new(&env!("CARGO_MANIFEST_DIR"))
@@ -66,4 +70,3 @@ fn project_root() -> PathBuf {
 fn target_dist_dir() -> PathBuf {
     project_root().join("target/dist")
 }
-
