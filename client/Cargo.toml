@@ -7,12 +7,9 @@ edition = "2021"
 
 [dependencies]
 server = { path = "../server" }
-srpc = "0.1.0"
-canary = "0.1.0"
+srpc = "0.1.2"
+canary = "0.1.2"
 yew = "0.19"
 wasm-bindgen-futures = "0.4"
 
-# feature fixes for WASM
-getrandom = { version = "0.2.3", features = ["js"] }
-uuid = { version = "0.8.2", features = ["wasm-bindgen"] }
 
